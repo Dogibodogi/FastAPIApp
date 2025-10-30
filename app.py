@@ -10,7 +10,10 @@ from schemas import Task, TaskCreate, TaskUpdate
 
 app = FastAPI()
 
-origins = ["*"]
+origins = [
+    "https://fastapiapp-1-klgg.onrender.com",
+    "http://localhost:5173",
+]
 
 
 app.add_middleware(
