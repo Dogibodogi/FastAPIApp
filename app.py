@@ -3,17 +3,30 @@ from typing import List, Optional
 from datetime import datetime
 import service as task_service
 from database import init_db, get_db, TaskModel
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from schemas import Task, TaskCreate, TaskUpdate
 
 app = FastAPI()
 
+origins=[
+    "https://fastapiapp-1-klgg.onrender.com"
+    "http://localhost:5173"
+]
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # Allows specific origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allows all headers
+)
 
 @app.on_event("startup")
 async def on_startup():
     await init_db()
-
 
 @app.get("/tasks", response_model=List[Task])
 async def read_tasks(db: AsyncSession = Depends(get_db)):
